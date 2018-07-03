@@ -41,7 +41,12 @@ class Region(object):
 
     def locate(self):
         p_list = self.doc.xpath('//p/text()|//div/text()|//td/text()')
-        unimportant_texts = set(self.doc.xpath("//a/text()|//dd//text()"))
+        unimportant_texts_src = set(self.doc.xpath("//a/text()|//dd//text()"))
+        unimportant_texts = set()
+        # 如果小于50个字符才认为是不重要的内容
+        for ut in unimportant_texts_src:
+            if len(ut) <= 50:
+                unimportant_texts.add(ut)
         N_p = len(p_list)
         window_size = self.window_size
         for region_ratio in self.region_ratios:
